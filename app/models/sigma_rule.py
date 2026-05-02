@@ -1,6 +1,7 @@
 import enum
 import uuid
-from datetime import date, datetime
+from datetime import date as _date
+from datetime import datetime
 from typing import Optional
 
 from sqlalchemy import Date, DateTime, Enum as SAEnum, String, Text, func
@@ -43,8 +44,8 @@ class SigmaRule(Base):
     description: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     license: Mapped[Optional[str]] = mapped_column(String(128), nullable=True)
     author: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    date: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
-    modified: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
+    date: Mapped[Optional[_date]] = mapped_column(Date, nullable=True)
+    modified: Mapped[Optional[_date]] = mapped_column(Date, nullable=True)
     references: Mapped[Optional[list[str]]] = mapped_column(ARRAY(Text), nullable=True)
     tags: Mapped[Optional[list[str]]] = mapped_column(ARRAY(Text), nullable=True)
     falsepositives: Mapped[Optional[list[str]]] = mapped_column(ARRAY(Text), nullable=True)

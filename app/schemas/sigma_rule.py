@@ -1,5 +1,6 @@
 import uuid
-from datetime import date, datetime
+from datetime import date as _date
+from datetime import datetime
 from typing import Any, Optional
 
 from pydantic import BaseModel, ConfigDict
@@ -13,8 +14,8 @@ class SigmaRuleBase(BaseModel):
     description: Optional[str] = None
     license: Optional[str] = None
     author: Optional[str] = None
-    date: Optional[date] = None
-    modified: Optional[date] = None
+    date: Optional[_date] = None
+    modified: Optional[_date] = None
     references: Optional[list[str]] = None
     tags: Optional[list[str]] = None
     falsepositives: Optional[list[str]] = None
@@ -38,8 +39,8 @@ class SigmaRuleUpdate(BaseModel):
     description: Optional[str] = None
     license: Optional[str] = None
     author: Optional[str] = None
-    date: Optional[date] = None
-    modified: Optional[date] = None
+    date: Optional[_date] = None
+    modified: Optional[_date] = None
     references: Optional[list[str]] = None
     tags: Optional[list[str]] = None
     falsepositives: Optional[list[str]] = None
