@@ -5,3 +5,5 @@ alembic
 pydantic
 asyncpg
 python-dotenv
+pySigma-backend-sqlite
+pySigma-backend-splunk
