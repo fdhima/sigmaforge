@@ -11,8 +11,6 @@ DATABASE_URL = (
     f"{os.getenv('POSTGRES_DB')}"
 )
 
-print(DATABASE_URL)
-
 engine = create_async_engine(DATABASE_URL, echo=False)
 async_session_maker = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
