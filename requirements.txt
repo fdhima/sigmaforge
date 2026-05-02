@@ -1,4 +1,6 @@
 sqlalchemy[asyncio]
+fastapi
+uvicorn[standard]
 alembic
 pydantic
 asyncpg
