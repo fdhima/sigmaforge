@@ -7,7 +7,7 @@ load_dotenv()
 
 DATABASE_URL = (
     f"postgresql+asyncpg://{os.getenv('POSTGRES_USER')}:"
-    f"{os.getenv('POSTGRES_PASSWORD')}@localhost:5432/"
+    f"{os.getenv('POSTGRES_PASSWORD')}@db:5432/"
     f"{os.getenv('POSTGRES_DB')}"
 )
 
