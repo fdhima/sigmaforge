@@ -1,0 +1,6 @@
+sqlalchemy[asyncio]
+alembic
+pydantic
+asyncpg
+python-dotenv
+psycopg2
