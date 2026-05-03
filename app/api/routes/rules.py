@@ -4,6 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import cast, or_, select, String
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.core.security import get_current_user
 from app.database import get_session
 from app.models.sigma_rule import LevelEnum, SigmaRule, StatusEnum
 from app.schemas.sigma_rule import SigmaRuleCreate, SigmaRuleResponse, SigmaRuleUpdate
@@ -15,6 +16,7 @@ router = APIRouter(prefix="/rules", tags=["rules"])
 async def create_rule(
     body: SigmaRuleCreate,
     session: AsyncSession = Depends(get_session),
+    _: dict = Depends(get_current_user),
 ) -> SigmaRule:
     data = body.model_dump(exclude_none=True)
     rule = SigmaRule(**data)
@@ -85,6 +87,7 @@ async def update_rule(
     rule_id: uuid.UUID,
     body: SigmaRuleUpdate,
     session: AsyncSession = Depends(get_session),
+    _: dict = Depends(get_current_user),
 ) -> SigmaRule:
     rule = await session.get(SigmaRule, rule_id)
     if rule is None:
@@ -102,6 +105,7 @@ async def update_rule(
 async def delete_rule(
     rule_id: uuid.UUID,
     session: AsyncSession = Depends(get_session),
+    _: dict = Depends(get_current_user),
 ) -> None:
     rule = await session.get(SigmaRule, rule_id)
     if rule is None:
