@@ -7,6 +7,7 @@ from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from app.database import DATABASE_URL, Base
 import app.models.sigma_rule  # noqa: F401 — registers models with Base.metadata
+import app.models.user  # noqa: F401
 
 config = context.config
 

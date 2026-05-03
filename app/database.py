@@ -5,9 +5,10 @@ from sqlalchemy.orm import DeclarativeBase
 
 load_dotenv()
 
+_db_host = os.getenv("POSTGRES_HOST", "db")
 DATABASE_URL = (
     f"postgresql+asyncpg://{os.getenv('POSTGRES_USER')}:"
-    f"{os.getenv('POSTGRES_PASSWORD')}@db:5432/"
+    f"{os.getenv('POSTGRES_PASSWORD')}@{_db_host}:5432/"
     f"{os.getenv('POSTGRES_DB')}"
 )
 
