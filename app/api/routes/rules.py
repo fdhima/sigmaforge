@@ -2,6 +2,7 @@ import uuid
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy import cast, or_, select, String
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.security import get_current_user
@@ -21,7 +22,14 @@ async def create_rule(
     data = body.model_dump(exclude_none=True)
     rule = SigmaRule(**data)
     session.add(rule)
-    await session.commit()
+    try:
+        await session.commit()
+    except IntegrityError:
+        await session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail=f"Sigma rule with id {rule.id} already exists",
+        )
     await session.refresh(rule)
     return rule
 
