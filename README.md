@@ -28,6 +28,13 @@ A REST API for managing, storing, and converting [Sigma](https://sigmahq.io/) de
 | Configuration | python-dotenv |
 | Containerisation | Docker, Docker Compose |
 
+## Docker Hub
+
+The project is automatically built and pushed to Docker Hub and GitHub Container Registry (GHCR) on every push to the `main` branch.
+
+- **Docker Hub:** [fdhima/sigmaforge](https://hub.docker.com/r/fdhima/sigmaforge)
+- **GHCR:** `ghcr.io/fdhima/sigmaforge`
+
 ## Architecture
 
 ```
@@ -51,6 +58,9 @@ sigmaforge/
 │       ├── sigma_parser.py      # YAML → SigmaCollection → SigmaRuleCreate; conversion engine
 │       └── converter.py         # Usage example / manual test script
 ├── alembic/                     # Database migration history
+├── tests/                       # Integration tests with pytest
+│   ├── conftest.py              # Test configuration and shared fixtures
+│   └── test_rules.py            # Rule CRUD and filtering tests
 ├── Dockerfile
 ├── docker-compose.yml
 └── requirements.txt
@@ -171,3 +181,27 @@ pip install -r requirements.txt
 alembic upgrade head
 uvicorn app.main:app --reload
 ```
+
+## Testing
+
+The project uses `pytest` and `pytest-asyncio` for integration testing.
+
+### Running tests with Docker
+
+Ensure the services are running, then:
+
+```bash
+docker compose exec api pytest
+```
+
+### Running tests locally
+
+1. Create a test database (e.g., `sigmaforge_test`).
+2. Set the `TEST_DATABASE_URL` in your `.env` or environment:
+   ```bash
+   export TEST_DATABASE_URL=postgresql+asyncpg://user:password@localhost:5432/sigmaforge_test
+   ```
+3. Run pytest:
+   ```bash
+   pytest
+   ```
