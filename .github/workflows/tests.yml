@@ -50,5 +50,5 @@ jobs:
       - name: Run tests
         run: python3 -m pytest
       
-      -name: Build Docker image
+      - name: Build Docker image
         run: docker build -t sigmaforge .
