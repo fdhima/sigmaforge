@@ -14,7 +14,7 @@ from app.models.user import User
 import os
 
 # SECRET_KEY = "change-me-in-production"  # override via env var in prod
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('SECRET_KEY', "insecure-default-key-for-dev")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
