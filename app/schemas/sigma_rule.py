@@ -59,3 +59,9 @@ class SigmaRuleResponse(SigmaRuleBase):
     id: uuid.UUID
     created_at: datetime
     updated_at: datetime
+
+
+class RuleConversionResponse(BaseModel):
+    rule_id: uuid.UUID
+    backend: str
+    queries: list[str]

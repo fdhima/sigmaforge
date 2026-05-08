@@ -8,9 +8,26 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.core.security import get_current_user
 from app.database import get_session
 from app.models.sigma_rule import LevelEnum, SigmaRule, StatusEnum
-from app.schemas.sigma_rule import SigmaRuleCreate, SigmaRuleResponse, SigmaRuleUpdate
+from app.schemas.sigma_rule import (
+    RuleConversionResponse,
+    SigmaRuleCreate,
+    SigmaRuleResponse,
+    SigmaRuleUpdate,
+)
+from app.services.sigma_parser import (
+    SigmaConversionError,
+    SigmaParseError,
+    convert_to_query,
+    list_backends,
+)
 
 router = APIRouter(prefix="/rules", tags=["rules"])
+
+
+@router.get("/backends", response_model=list[str])
+async def get_backends() -> list[str]:
+    """List all available Sigma backends."""
+    return list_backends()
 
 
 @router.post("/", response_model=SigmaRuleResponse, status_code=status.HTTP_201_CREATED)
@@ -88,6 +105,31 @@ async def get_rule(
     if rule is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Rule not found")
     return rule
+
+
+@router.get("/{rule_id}/convert", response_model=RuleConversionResponse)
+async def convert_rule(
+    rule_id: uuid.UUID,
+    backend: str = Query(..., description="The backend to convert the rule to"),
+    pipelines: list[str] | None = Query(None, description="Optional processing pipelines"),
+    session: AsyncSession = Depends(get_session),
+) -> RuleConversionResponse:
+    """Convert a stored Sigma rule to a backend-specific query."""
+    rule = await session.get(SigmaRule, rule_id)
+    if rule is None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Rule not found")
+
+    if not rule.raw_rule:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Rule has no raw source to convert",
+        )
+
+    try:
+        queries = convert_to_query(rule.raw_rule, backend, pipeline_names=pipelines)
+        return RuleConversionResponse(rule_id=rule_id, backend=backend, queries=queries)
+    except (SigmaConversionError, SigmaParseError) as e:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail=str(e))
 
 
 @router.patch("/{rule_id}", response_model=SigmaRuleResponse)
