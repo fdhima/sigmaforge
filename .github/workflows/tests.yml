@@ -1,69 +1,3 @@
-# name: Tests
-
-# on:
-#   push:
-#     branches: [ main ]
-#   pull_request:
-#     branches: [ main ]
-
-# jobs:
-#   test:
-#     runs-on: ubuntu-latest
-
-#     services:
-#       postgres:
-#         image: postgres:16
-#         env:
-#           POSTGRES_USER: user
-#           POSTGRES_PASSWORD: password
-#           POSTGRES_DB: sigmaforge_test
-#         ports:
-#           - 5432:5432
-
-#         options: >-
-#           --health-cmd="pg_isready -U user -d sigmaforge_test"
-#           --health-interval=10s
-#           --health-timeout=5s
-#           --health-retries=5
-
-#     env:
-#       TEST_DATABASE_URL: postgresql+asyncpg://user:password@localhost:5432/sigmaforge_test
-#       SECRET_KEY: test-secret-key-for-ci
-
-#     steps:
-#       - name: Checkout code
-#         uses: actions/checkout@v4
-
-#       - name: Set up Python
-#         uses: actions/setup-python@v5
-#         with:
-#           python-version: "3.12"
-
-#       - name: Install dependencies
-#         run: |
-#           python -m pip install --upgrade pip
-#           pip install -r requirements.txt
-      
-#       - name: Run Ruff
-#         run: ruff check .
-
-#       - name: Run tests
-#         run: python3 -m pytest
-      
-#       - name: Build Docker image
-#         run: docker build -t sigmaforge .
-
-#       - name: Login to Docker Hub
-#         uses: docker/login-action@v3
-#         with:
-#           username: ${{ secrets.DOCKER_USERNAME }}
-#           password: ${{ secrets.DOCKER_PASSWORD }}
-
-#       - name: Build and push
-#         uses: docker/build-push-action@v5
-#         with:
-#           push: true
-#           tags: yourname/sigmaforge:latest
 name: CI/CD
 
 on:
@@ -110,7 +44,7 @@ jobs:
           pip install -r requirements.txt
 
       - name: Run tests
-        run: pytest
+        run: python3 -m pytest
 
   docker:
     needs: test
