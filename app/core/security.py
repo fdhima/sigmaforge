@@ -11,7 +11,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_session
 from app.models.user import User
 
-from dotenv import load_dotenv
 import os
 
 # SECRET_KEY = "change-me-in-production"  # override via env var in prod
