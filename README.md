@@ -32,7 +32,7 @@ A REST API for managing, storing, and converting [Sigma](https://sigmahq.io/) de
 
 The project is automatically built and pushed to Docker Hub and GitHub Container Registry (GHCR) on every push to the `main` branch.
 
-- **Docker Hub:** [fdhima/sigmaforge](https://hub.docker.com/r/fdhima/sigmaforge)
+- **Docker Hub:** [fdhima/sigmaforge](https://hub.docker.com/r/dflorian251/sigmaforge)
 - **GHCR:** `ghcr.io/fdhima/sigmaforge`
 
 ## Architecture
